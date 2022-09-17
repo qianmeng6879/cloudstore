@@ -37,6 +37,7 @@ public class OAuthFallbackController extends AbstractBaseAction {
         MemberDTO memberDTO = loginService.qqLogin(code);
         Map<String, Object> map = new HashMap<>();
         map.put("id", memberDTO.getId());
+        map.put("username", memberDTO.getUsername());
         map.put("nickname", memberDTO.getNickname());
         map.put("avatar", memberDTO.getAvatar());
         map.put("createTime", format(memberDTO.getCreateTime()));

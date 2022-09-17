@@ -3,7 +3,6 @@ package top.mxzero.cloudstore.aspect;
 import com.alibaba.fastjson.JSONObject;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
-import lombok.Cleanup;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -22,6 +21,8 @@ import top.mxzero.jwt.service.ITokenService;
 import javax.servlet.http.HttpServletRequest;
 
 /**
+ * 用户认证
+ *
  * @author zero
  * @email qianmeng6879@163.com
  * @since 2022/9/16
@@ -34,6 +35,14 @@ public class AuthenticationCheckAspect {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AuthenticationCheckAspect.class);
 
+    /**
+     * 拦截带有top.mxzero.jwt.annotation.JWTAuthentication注解的类
+     * 检测请求头时候带有身份认证参数
+     *
+     * @param point
+     * @return
+     * @throws Throwable
+     */
     @Around("@annotation(top.mxzero.jwt.annotation.JWTAuthentication)")
     public Object handler(ProceedingJoinPoint point) throws Throwable {
 
@@ -45,10 +54,10 @@ public class AuthenticationCheckAspect {
 
         if (authorization == null || authorization.length() < 10) {
             token = request.getParameter("access_token");
-            if(!StringUtils.hasLength(token)){
+            if (!StringUtils.hasLength(token)) {
                 return RestResponse.fail("Unauthenticated").code(401);
             }
-        }else {
+        } else {
             token = authorization.substring(7);
         }
 

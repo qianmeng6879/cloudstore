@@ -35,5 +35,4 @@
             <artifactId>springfox-boot-starter</artifactId>
         </dependency>
     </dependencies>
-
 </project>

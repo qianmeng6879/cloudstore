@@ -28,17 +28,10 @@ public class MemberController {
     @Autowired
     private MemberServiceImpl memberService;
 
+    @JWTAuthentication
     @RequestMapping("/authorize")
-    public RestResponse authorize(@RequestHeader("Authorization") String token) {
-        Jws<Claims> claimsJws = tokenService.parseToken(token.substring(7));
-
-        if (claimsJws == null) {
-            return RestResponse.fail("Unauthenticated").code(401);
-        }
-
-        String subject = claimsJws.getBody().getSubject();
-        MemberDTO memberDTO = JSONObject.parseObject(subject, MemberDTO.class);
-        return RestResponse.success(memberDTO);
+    public RestResponse authorize() {
+        return RestResponse.success(UserUtil.currentUser());
     }
 
     @JWTAuthentication
