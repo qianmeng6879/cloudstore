@@ -11,12 +11,6 @@
 
     <artifactId>endpoint</artifactId>
 
-    <properties>
-        <maven.compiler.source>17</maven.compiler.source>
-        <maven.compiler.target>17</maven.compiler.target>
-    </properties>
-    <packaging>jar</packaging>
-
     <dependencies>
         <dependency>
             <groupId>top.mxzero.cloudstore</groupId>
@@ -35,6 +29,10 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-aop</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-boot-starter</artifactId>
         </dependency>
     </dependencies>
 

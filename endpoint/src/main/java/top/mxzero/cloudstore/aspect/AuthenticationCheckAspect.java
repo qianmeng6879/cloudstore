@@ -11,6 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 import top.mxzero.common.dto.MemberDTO;
@@ -39,17 +40,24 @@ public class AuthenticationCheckAspect {
         ServletRequestAttributes requestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
         HttpServletRequest request = requestAttributes.getRequest();
 
-        String token = request.getHeader("Authorization");
-        if (token == null || token.length() < 10) {
-            return RestResponse.fail("Unauthenticated").code(401);
+        String authorization = request.getHeader("Authorization");
+        String token;
+
+        if (authorization == null || authorization.length() < 10) {
+            token = request.getParameter("access_token");
+            if(!StringUtils.hasLength(token)){
+                return RestResponse.fail("Unauthenticated").code(401);
+            }
+        }else {
+            token = authorization.substring(7);
         }
 
-        if (!tokenService.verifyToken(token.substring(7))) {
+        if (!tokenService.verifyToken(token)) {
             return RestResponse.fail("Unauthenticated").code(401);
         }
 
         try {
-            Jws<Claims> claimsJws = tokenService.parseToken(token.substring(7));
+            Jws<Claims> claimsJws = tokenService.parseToken(token);
             MemberDTO memberDTO = JSONObject.parseObject(claimsJws.getBody().getSubject(), MemberDTO.class);
             UserUtil.set(memberDTO);
 

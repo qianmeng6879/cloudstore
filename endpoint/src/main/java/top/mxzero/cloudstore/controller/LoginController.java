@@ -1,6 +1,6 @@
 package top.mxzero.cloudstore.controller;
 
-import net.bytebuddy.asm.Advice;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -30,6 +30,7 @@ public class LoginController extends AbstractBaseAction {
     @Autowired
     private ITokenService tokenService;
 
+    @ApiOperation("登录接口")
     @PostMapping("/login")
     public RestResponse<?> loginHandler(@RequestBody LoginDTO loginDTO) {
         MemberDTO memberDTO = loginService.login(loginDTO);
