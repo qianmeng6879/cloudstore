@@ -76,7 +76,7 @@ public class FileUploadController {
         Map<String, String> map = new HashMap<>();
         map.put("username", memberDTO.getUsername());
         map.put("dirname", dirname);
-        map.put("filename", file.getOriginalFilename());
+        map.put("filename", currentFile.getName());
         map.put("filefullname", dirname + file.getOriginalFilename());
         map.put("filestorename", currentFile.getCanonicalPath());
         map.put("filesize", String.format("%skB", file.getSize() / 1024));
