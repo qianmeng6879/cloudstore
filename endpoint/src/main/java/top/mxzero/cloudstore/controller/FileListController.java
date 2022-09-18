@@ -4,12 +4,15 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import top.mxzero.common.AbstractBaseAction;
+import top.mxzero.common.dto.FileDTO;
 import top.mxzero.common.response.RestResponse;
 import top.mxzero.common.utils.UserUtil;
 import top.mxzero.jwt.annotation.JWTAuthentication;
 
 import java.io.File;
-import java.util.LinkedList;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -18,7 +21,7 @@ import java.util.List;
  * @since 2022/9/17
  */
 @RestController
-public class FileListController {
+public class FileListController extends AbstractBaseAction {
     @Value("${mxzero.file.upload.prefix}")
     private String prefix;
 
@@ -54,12 +57,20 @@ public class FileListController {
 
         File[] files = file.listFiles();
 
-        List<String> filenames = new LinkedList<>();
+        List<FileDTO> fileDTOS = new ArrayList<>();
 
         for (int i = 0; i < files.length; i++) {
-            filenames.add(files[i].getName());
+            File currentFile = files[i];
+            FileDTO fileDTO = new FileDTO();
+            fileDTO.setName(currentFile.getName());
+            fileDTO.setSize(currentFile.length() / 1024 + "kb");
+            fileDTO.setType(currentFile.isDirectory() ? "dir" : "file");
+            fileDTO.setLastModified(format(new Date(currentFile.lastModified())));
+            fileDTO.setRead(currentFile.canRead());
+            fileDTO.setWrite(currentFile.canWrite());
+            fileDTOS.add(fileDTO);
         }
 
-        return RestResponse.success(filenames);
+        return RestResponse.success(fileDTOS);
     }
 }
