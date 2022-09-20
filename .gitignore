@@ -4,6 +4,7 @@
 .idea/
 .idea
 
+.idea/misc.xml
 application-dev.yml
 application-prod.yml
 
