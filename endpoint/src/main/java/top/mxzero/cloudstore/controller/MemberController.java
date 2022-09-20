@@ -1,15 +1,11 @@
 package top.mxzero.cloudstore.controller;
 
-import com.alibaba.fastjson.JSONObject;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jws;
-import net.bytebuddy.asm.Advice;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import top.mxzero.cloudstore.serviceImpl.MemberServiceImpl;
 import top.mxzero.common.dto.MemberDTO;
 import top.mxzero.common.dto.MemberDetailDTO;
-import top.mxzero.common.exception.APIException;
 import top.mxzero.common.response.RestResponse;
 import top.mxzero.common.utils.UserUtil;
 import top.mxzero.jwt.annotation.JWTAuthentication;
@@ -54,6 +50,18 @@ public class MemberController {
             RestResponse.fail("Not Found").code(404);
         }
         return RestResponse.success(memberDetailDTO);
+    }
+
+    /**
+     * 用户信息修改
+     *
+     * @param id        用户ID
+     * @param memberDTO 用户信息DTO类
+     */
+    @JWTAuthentication
+    @PutMapping("/members/{id}")
+    public RestResponse<?> editMemberInfo(@PathVariable("id") Long id, MemberDTO memberDTO) {
+        return null;
     }
 }
 

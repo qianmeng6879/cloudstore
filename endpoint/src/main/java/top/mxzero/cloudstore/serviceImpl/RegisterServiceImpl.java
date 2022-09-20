@@ -12,7 +12,6 @@ import top.mxzero.common.dto.MemberDTO;
 import top.mxzero.common.service.RegisterService;
 import top.mxzero.common.dto.RegisterDTO;
 import top.mxzero.common.exception.APIException;
-import top.mxzero.common.utils.EmailUtil;
 import top.mxzero.common.utils.PasswordUtil;
 import java.util.Date;
 import java.util.UUID;
